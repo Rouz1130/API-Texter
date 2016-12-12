@@ -11,29 +11,35 @@ namespace TwilloText
     {
         static void Main(string[] args)
         {
-            //1-Make a connection with the server where the API is located.
             var client = new RestClient("https://api.twilio.com/2010-04-01");
-
-            //2-  Create the request, and add the physical path to the specific API controller and choose the HTTP method.
-            var request = new RestRequest("Accounts/{{ec711bf2721a30f2d7cf4594a66a28a2}}/Messages", Method.POST);
-
-            //3-Add parameters to our request. Here we've set the text message's sender, recipient, and actual message.
-            request.AddParameter("To", "+14254356992");
-            request.AddParameter("From", "+16062548006");
-            request.AddParameter("Body", "Hello world!");
-
-
-            //4-Give the client the appropriate credentials.
+            //1- We're making a GET request to the URL now. We've tacked on .json to the end of the URL to get the response in JSON format.
+            var request = new RestRequest("Accounts/{{Account SID}}/Messages.json", Method.GET);
             client.Authenticator = new HttpBasicAuthenticator("{{Account SID}}", "{{Auth Token}}");
 
+            //2-We initialize a new RestResponse variable named response
+            var response = new RestResponse();
 
-            //5-Execute the request to the client. Note that the second argument for 
-            // ExecuteAsync needs callback (which we include here as a Console.WriteLine()) to process the request.
-            client.ExecuteAsync(request, response =>
+            //3a-The request is made with an asynchronous method, and Task.Run with Wait() allows us to await asynchronous calls in a "synchronous" way. 
+            Task.Run(async () =>
             {
-                Console.WriteLine(response);
-            });
+                response = await GetResponseContentAsync(client, request) as RestResponse;
+            }).Wait();
+
+
+            //4-The response has a Content property, which we write to the console.
+            Console.WriteLine(response.Content);
             Console.ReadLine();
         }
+
+        //3b- We set response equal to the response from our request, which we make in the method shown in 3b, and then cast as the type RestResponse.
+        public static Task<IRestResponse> GetResponseContentAsync(RestClient theClient, RestRequest theRequest)
+        {
+            var tcs = new TaskCompletionSource<IRestResponse>();
+            theClient.ExecuteAsync(theRequest, response => {
+                tcs.SetResult(response);
+            });
+            return tcs.Task;
+        }
+
     }
 }
