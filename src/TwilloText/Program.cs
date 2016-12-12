@@ -18,8 +18,8 @@ namespace TwilloText
             var request = new RestRequest("Accounts/{{ec711bf2721a30f2d7cf4594a66a28a2}}/Messages", Method.POST);
 
             //3-Add parameters to our request. Here we've set the text message's sender, recipient, and actual message.
-            request.AddParameter("To", "+3312145769");
-            request.AddParameter("From", "{{sender's phone number}}");
+            request.AddParameter("To", "+14254356992");
+            request.AddParameter("From", "+16062548006");
             request.AddParameter("Body", "Hello world!");
 
 
