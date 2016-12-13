@@ -9,7 +9,15 @@ using Newtonsoft.Json.Linq;
 
 namespace TwilloText
 {
-     public class Program
+    public class Message
+    {
+        // properties of the message that we want.
+        public string To { get; set; }
+        public string From { get; set; }
+        public string Body { get; set; }
+        public string Status { get; set; }
+    }
+    class progarm
     {
         static void Main(string[] args)
         {
@@ -30,14 +38,21 @@ namespace TwilloText
             //JasonConvert.DeserializeObject()<Jobject>(respoonse.content) converts the JSON-formatted string response.Content into a JObject.
             // JObject comes from the Newtonsoft.Json.Linq library and is a .NET object we can treat as JSON.
             JObject jsonResponse = JsonConvert.DeserializeObject<JObject>(response.Content);
-          
-            // we have access to the data stored in the "messages" key, and all we have to do is call jsonResponse["messages"]
-            Console.WriteLine(jsonResponse["messages"]);
+            var messageList = JsonConvert.DeserializeObject<List<Message>>(jsonResponse["messages"].ToString());
+            foreach (var message in messageList)
+            {
+                Console.WriteLine("To: {0}", message.To);
+                Console.WriteLine("From: {0}", message.From);
+                Console.WriteLine("Body: {0}", message.Body);
+                Console.WriteLine("Status: {0}", message.Status);
+            }
             Console.ReadLine();
-
         }
 
-        //3b- We set response equal to the response from our request, which we make in the method shown in 3b, and then cast as the type RestResponse.
+
+
+
+    //3b- We set response equal to the response from our request, which we make in the method shown in 3b, and then cast as the type RestResponse.
         public static Task<IRestResponse> GetResponseContentAsync(RestClient theClient, RestRequest theRequest)
         {
             var tcs = new TaskCompletionSource<IRestResponse>();
@@ -46,7 +61,14 @@ namespace TwilloText
             });
             return tcs.Task;
         }
-
-        // deserializing- We can actually pull this array out as a JSON object 
+        // deserializing- We can actually pull this array out as a JSON object.
     }
 }
+    
+    
+  
+
+ 
+     
+
+
