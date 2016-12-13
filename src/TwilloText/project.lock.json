@@ -7317,6 +7317,7 @@
   "projectFileDependencyGroups": {
     "": [
       "Microsoft.NETCore.App >= 1.0.1",
+      "Newtonsoft.Json >= 9.0.1",
       "RestSharp.NetCore >= 105.2.3"
     ],
     ".NETCoreApp,Version=v1.0": []
