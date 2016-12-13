@@ -12,6 +12,7 @@ namespace TwilloText
     public class Message
     {
         // properties of the message that we want.
+        // 
         public string To { get; set; }
         public string From { get; set; }
         public string Body { get; set; }
@@ -34,13 +35,22 @@ namespace TwilloText
             {
                 response = await GetResponseContentAsync(client, request) as RestResponse;
             }).Wait();
+
+
             // we turn a giant string stored as response.content into JSON data.
             //JasonConvert.DeserializeObject()<Jobject>(respoonse.content) converts the JSON-formatted string response.Content into a JObject.
             // JObject comes from the Newtonsoft.Json.Linq library and is a .NET object we can treat as JSON.
+
+            // DeserializeObject went into the data for each message and found those keys to create Message objects for us. from our class message.
             JObject jsonResponse = JsonConvert.DeserializeObject<JObject>(response.Content);
+
+            // program to convert the string jsonResponse["messages"]into a list of Message objects, 
             var messageList = JsonConvert.DeserializeObject<List<Message>>(jsonResponse["messages"].ToString());
+            // for each loop through and print the properties of each Message
             foreach (var message in messageList)
             {
+                // these are the property keys for our class which we gave at the top off the page.
+                // property name has to match the JSON key
                 Console.WriteLine("To: {0}", message.To);
                 Console.WriteLine("From: {0}", message.From);
                 Console.WriteLine("Body: {0}", message.Body);
