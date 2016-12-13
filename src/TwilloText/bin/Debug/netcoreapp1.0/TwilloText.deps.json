@@ -8,6 +8,7 @@
     ".NETCoreApp,Version=v1.0": {
       "TwilloText/1.0.0": {
         "dependencies": {
+          "Newtonsoft.Json": "9.0.1",
           "RestSharp.NetCore": "105.2.3"
         },
         "runtime": {

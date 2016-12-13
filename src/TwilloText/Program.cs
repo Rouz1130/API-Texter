@@ -26,8 +26,12 @@ namespace TwilloText
             {
                 response = await GetResponseContentAsync(client, request) as RestResponse;
             }).Wait();
-
+            // we turn a giant string stored as response.content into JSON data.
+            //JasonConvert.DeserializeObject()<Jobject>(respoonse.content) converts the JSON-formatted string response.Content into a JObject.
+            // JObject comes from the Newtonsoft.Json.Linq library and is a .NET object we can treat as JSON.
             JObject jsonResponse = JsonConvert.DeserializeObject<JObject>(response.Content);
+          
+            // we have access to the data stored in the "messages" key, and all we have to do is call jsonResponse["messages"]
             Console.WriteLine(jsonResponse["messages"]);
             Console.ReadLine();
 
